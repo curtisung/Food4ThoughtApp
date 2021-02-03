@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Food App</string>
+    <string name="title_home">Home</string>
+    <string name="title_search">Search</string>
+    <string name="title_saved">Saved</string>
+    <string name="title_recipe">Recipe</string>
+    <string name="search_placeholder">Display search results here.</string>
+    <string name="saved_placeholder">Display saved recipes here.</string>
+    <string name="home_placeholder">Ingredient selection happens here.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_title">Food 4 Thought</string>
+</resources>
