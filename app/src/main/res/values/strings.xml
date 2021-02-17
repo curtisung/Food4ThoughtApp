@@ -7,6 +7,7 @@
     <string name="search_placeholder">Display search results here.</string>
     <string name="saved_placeholder">Display saved recipes here.</string>
     <string name="home_placeholder">Ingredient selection happens here.</string>
+    <string name="recipe_placeholder">Current recipe happens here.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_title">Food 4 Thought</string>

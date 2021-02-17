@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/navigation_recipe"
-        android:name="com.example.foodapp.ui.dashboard.DashboardFragment"
+        android:name="com.example.foodapp.ui.recipe.RecipeFragment"
         android:label="@string/title_recipe"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_recipe" />
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.foodapp.ui.home.HomeFragment"
@@ -18,13 +18,13 @@
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.foodapp.ui.dashboard.DashboardFragment"
+        android:name="com.example.foodapp.ui.search.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_saved"
-        android:name="com.example.foodapp.ui.notifications.NotificationsFragment"
+        android:name="com.example.foodapp.ui.saved.SavedFragment"
         android:label="@string/title_saved"
         tools:layout="@layout/fragment_saved" />
 </navigation>

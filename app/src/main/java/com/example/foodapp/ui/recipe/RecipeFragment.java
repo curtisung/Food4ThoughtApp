@@ -1,4 +1,4 @@
-package com.example.foodapp.ui.dashboard;
+package com.example.foodapp.ui.recipe;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,17 +14,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.foodapp.R;
 
-public class DashboardFragment extends Fragment {
+public class RecipeFragment extends Fragment{
 
-    private DashboardViewModel dashboardViewModel;
-
+    private RecipeViewModel recipeViewModel;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_search, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        recipeViewModel =
+                new ViewModelProvider(this).get(RecipeViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_recipe, container, false);
+        final TextView textView = root.findViewById(R.id.text_recipe);
+        recipeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
