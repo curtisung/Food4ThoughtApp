@@ -13,6 +13,10 @@ public class HomeViewModel extends ViewModel {
         mText.setValue("Ingredient selection happens here.");
     }
 
+    public void setmText(MutableLiveData<String> mText) {
+        this.mText = mText;
+    }
+
     public LiveData<String> getText() {
         return mText;
     }

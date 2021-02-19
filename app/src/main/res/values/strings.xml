@@ -8,7 +8,14 @@
     <string name="saved_placeholder">Display saved recipes here.</string>
     <string name="home_placeholder">Ingredient selection happens here.</string>
     <string name="recipe_placeholder">Current recipe happens here.</string>
+    <string name="search_bar_placeholder">Current searchbar happens here</string>
+    <string name="search_title_placeholder">Current search title happens here.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_title">Food 4 Thought</string>
+
+    <string-array name="query_suggestions">
+        <item>bread</item>
+        <item>celery</item>
+    </string-array>
 </resources>
