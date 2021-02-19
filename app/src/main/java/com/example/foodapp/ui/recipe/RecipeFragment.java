@@ -22,13 +22,13 @@ public class RecipeFragment extends Fragment{
         recipeViewModel =
                 new ViewModelProvider(this).get(RecipeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_recipe, container, false);
-        final TextView textView = root.findViewById(R.id.text_recipe);
-        recipeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+//        final TextView textView = root.findViewById(R.id.text_recipe);
+//        recipeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
         return root;
     }
 }
