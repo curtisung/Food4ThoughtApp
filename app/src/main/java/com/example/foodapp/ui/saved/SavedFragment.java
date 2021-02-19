@@ -23,13 +23,13 @@ public class SavedFragment extends Fragment {
         savedViewModel =
                 new ViewModelProvider(this).get(SavedViewModel.class);
         View root = inflater.inflate(R.layout.fragment_saved, container, false);
-        final TextView textView = root.findViewById(R.id.text_saved);
-        savedViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+//        final TextView textView = root.findViewById(R.id.text_saved);
+//        savedViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
         return root;
     }
 }

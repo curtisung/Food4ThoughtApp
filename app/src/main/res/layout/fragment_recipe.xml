@@ -9,7 +9,6 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -20,8 +19,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-=======
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="107dp"
         tools:layout_editor_absoluteY="64dp">
@@ -29,7 +27,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:context=".ui.recipe.RecipeFragment">
+            tools:context=".ui.recipe.RecipeFragment"
+            tools:ignore="MissingConstraints">
 
 
             <ImageView
@@ -156,6 +155,5 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
