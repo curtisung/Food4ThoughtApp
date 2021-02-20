@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.SearchView;
 
+import com.example.foodapp.ui.home.ExampleItem;
 import com.example.foodapp.ui.home.HomeViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -35,8 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,13 +51,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
         ///test api
         OkHttpClient client = new OkHttpClient();
-        ArrayList<String> ingredients= new ArrayList<>();
-        ingredients.add("butter");
-        ingredients.add("bread");
-        ingredients.add("sugar");
-        ingredients.add("broccoli");
-        ingredients.add("tomato");
-        ingredients.add("beef");
 //        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=<>=";
 //        for (int i = 0; i < ingredients.size(); i++) {
 //            if (i == 0){

@@ -13,6 +13,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_title">Food 4 Thought</string>
+    <string name="pantryEditText">Enter Ingredient Name</string>
+    <string name="pantryAddText">Add Ingredient to Pantry</string>
+    <string name="item1">ITEM_ONE</string>
+    <string name="item2">ITEM_TWO</string>
 
     <string-array name="query_suggestions">
         <item>bread</item>

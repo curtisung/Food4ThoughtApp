@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,12 +13,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodapp.R;
+
+import java.util.ArrayList;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private RecyclerView rv;
+    private RecyclerView.Adapter rva;
+    private RecyclerView.LayoutManager rvlm;
+    private ArrayList<ExampleItem> pantry = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +40,25 @@ public class HomeFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        rv = root.findViewById(R.id.recyclerView);
+        rv.setHasFixedSize(true);
+        rva = new ExampleAdapter(pantry);
+        rvlm = new LinearLayoutManager(getContext());
+        rv.setLayoutManager(rvlm);
+        rv.setAdapter(rva);
+
+        final Button btn = root.findViewById(R.id.pantryAddBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText e = (EditText) root.findViewById(R.id.pantryItemText);
+                String s = e.getText().toString();
+                pantry.add(new ExampleItem(s));
+                rva.notifyDataSetChanged();
+            }
+        });
+
         return root;
     }
 }
