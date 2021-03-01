@@ -50,7 +50,6 @@ public class HomeFragment extends Fragment {
 
         final Button btn = root.findViewById(R.id.pantryAddBtn);
         EditText e = (EditText) root.findViewById(R.id.pantryItemText);
-        e.setHint("Enter Ingredient Name");
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override

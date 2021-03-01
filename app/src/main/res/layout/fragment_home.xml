@@ -34,6 +34,7 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:gravity="center"
+        android:hint="@string/pantryEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
