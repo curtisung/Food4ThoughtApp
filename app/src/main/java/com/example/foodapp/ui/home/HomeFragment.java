@@ -26,7 +26,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView rv;
     private RecyclerView.Adapter rva;
     private RecyclerView.LayoutManager rvlm;
-    private ArrayList<ExampleItem> pantry = new ArrayList<>();
+    private ArrayList<ExampleItem> pantry = IngredientList.getInstance().getList();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,13 +49,20 @@ public class HomeFragment extends Fragment {
         rv.setAdapter(rva);
 
         final Button btn = root.findViewById(R.id.pantryAddBtn);
+        EditText e = (EditText) root.findViewById(R.id.pantryItemText);
+        e.setHint("Enter Ingredient Name");
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EditText e = (EditText) root.findViewById(R.id.pantryItemText);
                 String s = e.getText().toString();
-                pantry.add(new ExampleItem(s));
-                rva.notifyDataSetChanged();
+                ///only adds if there are characters in string
+                if (!s.equals("")){
+                    pantry.add(new ExampleItem(s));
+                    e.setText("");
+                    rva.notifyDataSetChanged();
+                }
+
             }
         });
 

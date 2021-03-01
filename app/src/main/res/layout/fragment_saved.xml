@@ -8,6 +8,9 @@
     tools:context=".ui.saved.SavedFragment"
     android:orientation="vertical">
 
+
+
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,7 +18,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -193,17 +196,17 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
-                android:layout_marginTop="30dp"
                 android:layout_marginLeft="30dp"
+                android:layout_marginTop="30dp"
                 android:layout_marginRight="30dp"
                 card_view:cardCornerRadius="4dp">
 
 
                 <LinearLayout
-                    android:outlineSpotShadowColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:outlineSpotShadowColor="@color/black">
 
                     <ImageView
                         android:id="@+id/imageView1"
@@ -216,8 +219,8 @@
                         android:layout_width="50dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:gravity="center"
                         android:background="#628837"
+                        android:gravity="center"
                         android:orientation="vertical">
 
 
@@ -228,9 +231,9 @@
                             android:layout_marginTop="30dp"
                             android:layout_weight="1"
                             android:text="Angus Beef burger2"
-                            android:textSize="20sp"
+                            android:textAlignment="center"
                             android:textColor="#FFFFFF"
-                            android:textAlignment="center" />
+                            android:textSize="20sp" />
 
                         <TextView
                             android:id="@+id/textViews"

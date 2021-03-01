@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleViewHolder> {
-    private ArrayList<ExampleItem> itemList;
+    ArrayList<ExampleItem> itemList;
 
     public static class ExampleViewHolder extends RecyclerView.ViewHolder {
         public TextView tv;

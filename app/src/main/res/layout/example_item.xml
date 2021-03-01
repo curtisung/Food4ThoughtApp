@@ -10,18 +10,20 @@
         android:id="@+id/cardView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/item1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/item1"
             android:textColor="@color/purple_200"
-            android:textSize="30sp"
-            android:layout_gravity="center" />
+            android:textSize="30sp" />
 
     </androidx.cardview.widget.CardView>
 
