@@ -16,12 +16,7 @@ import com.example.foodapp.ui.home.ExampleItem;
 import com.example.foodapp.ui.home.HomeViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -32,6 +27,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,46 +45,7 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
-        ///test api
-        OkHttpClient client = new OkHttpClient();
-//        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=<>=";
-//        for (int i = 0; i < ingredients.size(); i++) {
-//            if (i == 0){
-//                url += ingredients.get(i);
-//            }
-//            else{
-//                url += "+" +ingredients.get(i);
-//            }
-//            if (i != ingredients.size() - 1){
-//                url += ",";
-//            }
-//        }
-//        url += "&number=10";
-//        Log.i("url thingy", url);
-//        Request get = new Request.Builder()
-//                .url(url)
-//                .build();
 
-//        client.newCall(get).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) {
-//                try {
-//                    ResponseBody responseBody = response.body();
-//                    if (!response.isSuccessful()) {
-//                        throw new IOException("Unexpected code " + response);
-//                    }
-//
-//                    Log.i("data", responseBody.string());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
 
     }
 

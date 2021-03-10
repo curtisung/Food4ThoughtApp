@@ -1,6 +1,7 @@
 package com.example.foodapp.ui.search;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,11 +16,37 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.foodapp.R;
+import com.example.foodapp.ui.home.ExampleItem;
+import com.example.foodapp.ui.home.IngredientList;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+//import org.json.simple.parser.JSONParser;
+//import org.json.simple.parser.ParseException;
 
 public class SearchFragment extends Fragment {
 
     private SearchViewModel searchViewModel;
-
+    private ArrayList<ExampleItem> pantry = IngredientList.getInstance().getList();
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         View root = inflater.inflate(R.layout.fragment_search, container, false);
@@ -31,10 +58,96 @@ public class SearchFragment extends Fragment {
 //                textView.setText(s);
 //            }
 //        });
+
         return root;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //test api
+        OkHttpClient client = new OkHttpClient();
+//        Request get = new Request.Builder()
+//        .url(createURL())
+//        .build();
+//
+//        client.newCall(get).enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) {
+//                try {
+//                    ResponseBody responseBody = response.body();
+//                    if (!response.isSuccessful()) {
+//                        throw new IOException("Unexpected code " + response);
+//                    }
+//
+//                    Log.i("data", responseBody.string());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+
+        String obj = loadJSONFromAsset();
+
+        try {
+            JSONArray recipeList = new JSONArray(obj);
+            for(int i=0; i<recipeList.length(); i++) {
+                JSONObject recipe = (JSONObject) recipeList.getJSONObject(i);
+                Integer id = (Integer) recipe.get("id");
+                Log.i("id: ", id.toString());
+
+                String title = (String) recipe.get("title");
+                Log.i("title: ", title);
+
+                Integer usedIngredientCount = (Integer) recipe.get("usedIngredientCount");
+                Log.i("usedIngredientCount: ", usedIngredientCount.toString());
+
+                Integer missedIngredientCount = (Integer) recipe.get("missedIngredientCount");
+                Log.i("missedIngredientCount: ", missedIngredientCount.toString());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        // loop array
 
 
+    }
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getActivity().getAssets().open("trial.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+    }
+
+    public String createURL(){
+        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=a4f99db33e0c409c9acfde9739fca4eb&ingredients=";
+        for (int i = 0; i < pantry.size(); i++) {
+            if (i == 0){
+                url += pantry.get(i).getText1().trim();
+            }
+            else{
+                url += "+" + pantry.get(i).getText1().trim();
+            }
+            if (i != pantry.size() - 1){
+                url += ",";
+            }
+        }
+        url += "&number=10";
+        return url;
+    }
 }
 
