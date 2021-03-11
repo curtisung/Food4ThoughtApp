@@ -1,5 +1,7 @@
 package com.example.foodapp.ui.search;
 
+import android.content.ReceiverCallNotAllowedException;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodapp.R;
 import com.example.foodapp.ui.home.ExampleItem;
@@ -23,6 +28,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -44,21 +50,17 @@ import org.json.simple.parser.ParseException;
 //import org.json.simple.parser.ParseException;
 
 public class SearchFragment extends Fragment {
-
+    private RecyclerView RecipeRecyclerView;
+    private RecyclerView.Adapter RecipeAdapter;
+    private RecyclerView.LayoutManager RecipeLayoutManager;
+    private View root;
     private SearchViewModel searchViewModel;
     private ArrayList<ExampleItem> pantry = IngredientList.getInstance().getList();
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_search, container, false);
-//        final TextView textView = root.findViewById(R.id.text_search);
+        root = inflater.inflate(R.layout.fragment_search, container, false);
         setHasOptionsMenu(true);
-//        searchViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
-
         return root;
     }
 
@@ -96,20 +98,25 @@ public class SearchFragment extends Fragment {
 
         try {
             JSONArray recipeList = new JSONArray(obj);
+            ArrayList<RecipeItem> recipeFragList = new ArrayList<>();
             for(int i=0; i<recipeList.length(); i++) {
                 JSONObject recipe = (JSONObject) recipeList.getJSONObject(i);
+                String image = (String) recipe.get("image");
                 Integer id = (Integer) recipe.get("id");
-                Log.i("id: ", id.toString());
-
                 String title = (String) recipe.get("title");
-                Log.i("title: ", title);
-
-                Integer usedIngredientCount = (Integer) recipe.get("usedIngredientCount");
-                Log.i("usedIngredientCount: ", usedIngredientCount.toString());
-
-                Integer missedIngredientCount = (Integer) recipe.get("missedIngredientCount");
-                Log.i("missedIngredientCount: ", missedIngredientCount.toString());
+                String usedIngredientCount = recipe.get("usedIngredientCount").toString();
+                String missedIngredientCount = recipe.get("missedIngredientCount").toString();
+                recipeFragList.add(new RecipeItem(image, id, title, usedIngredientCount, missedIngredientCount));
             }
+            RecipeRecyclerView = root.findViewById(R.id.recyclerView);
+            RecipeRecyclerView.setHasFixedSize(true);
+            RecipeLayoutManager = new LinearLayoutManager(getContext());
+            RecipeAdapter = new RecyclerAdapter(recipeFragList);
+            RecipeRecyclerView.setLayoutManager(RecipeLayoutManager);
+            RecipeRecyclerView.setAdapter(RecipeAdapter);
+
+
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -117,6 +124,7 @@ public class SearchFragment extends Fragment {
 
 
     }
+
     public String loadJSONFromAsset() {
         String json = null;
         try {
