@@ -69,66 +69,63 @@ public class SearchFragment extends Fragment {
     private View root;
     private SearchViewModel searchViewModel;
     private String jsonStr = "";
+    private OkHttpClient client;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
         root = inflater.inflate(R.layout.fragment_search, container, false);
         setHasOptionsMenu(true);
+        client = new OkHttpClient();
         return root;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        //test api
-        OkHttpClient client = new OkHttpClient();
-        Request get = new Request.Builder()
-        .url(createURL())
-        .build();
+        System.out.println("SearchFragResume " + IngredientList.getInstance().getUpdatedStatus());
+        if (IngredientList.getInstance().getUpdatedStatus()){
+            APIThread p = new APIThread();
+            p.start();
 
-        client.newCall(get).enqueue(new Callback() {
-            @Override public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override public void onResponse(Call call, Response response) throws IOException {
-                try (ResponseBody responseBody = response.body()) {
-                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-                    Headers responseHeaders = response.headers();
-                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
-                        System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
-                    }
-
-                    jsonStr = responseBody.string();
-                }
-            }
-        });
 
 //        String obj = loadJSONFromAsset();
-        ArrayList<savedRecipeItem> savedRecipes = SavedList.getInstance().getList();
-        while (jsonStr.equals("")){
 
-        }
-        try {
-            JSONArray recipeList = new JSONArray(jsonStr);
-            ArrayList<RecipeItem> recipeFragList = new ArrayList<>();
-            for(int i=0; i<recipeList.length(); i++) {
-                JSONObject recipe = (JSONObject) recipeList.getJSONObject(i);
-                String image = (String) recipe.get("image");
-                Integer id = (Integer) recipe.get("id");
-                String title = (String) recipe.get("title");
-                String usedIngredientCount = recipe.get("usedIngredientCount").toString();
-                String missedIngredientCount = recipe.get("missedIngredientCount").toString();
-                Drawable star = ContextCompat.getDrawable(getActivity(), R.drawable.white_star);
-                for (int x = 0; x < savedRecipes.size(); x++){
-                    if (savedRecipes.get(x).getId() == id){
-                        star = ContextCompat.getDrawable(getActivity(), R.drawable.fav_star);
-                        break;
-                    }
-                }
-                recipeFragList.add(new RecipeItem(image,star, id, title, usedIngredientCount, missedIngredientCount));
+            while (jsonStr.equals("")){
+                System.out.println("loading jsonStr");
             }
+        }
+
+        try {
+            ArrayList<savedRecipeItem> savedRecipes = SavedList.getInstance().getList();
+            if (IngredientList.getInstance().getUpdatedStatus()) {
+                JSONArray recipeList = new JSONArray(jsonStr);
+                IngredientList.getInstance().setUpdatedStatusFalse();
+
+                ArrayList<RecipeItem> recipeFragList = new ArrayList<RecipeItem>();
+                for(int i=0; i<recipeList.length(); i++) {
+                    JSONObject recipe = (JSONObject) recipeList.getJSONObject(i);
+                    String image = (String) recipe.get("image");
+                    Integer id = (Integer) recipe.get("id");
+                    String title = (String) recipe.get("title");
+                    String usedIngredientCount = recipe.get("usedIngredientCount").toString();
+                    String missedIngredientCount = recipe.get("missedIngredientCount").toString();
+                    Drawable star = ContextCompat.getDrawable(getActivity(), R.drawable.white_star);
+                    for (int x = 0; x < savedRecipes.size(); x++){
+                        if (savedRecipes.get(x).getId() == id){
+                            star = ContextCompat.getDrawable(getActivity(), R.drawable.fav_star);
+                            break;
+                        }
+                    }
+                    recipeFragList.add(new RecipeItem(image,star, id, title, usedIngredientCount, missedIngredientCount));
+                }
+                SearchRecipeList.getInstance().setItemList(recipeFragList);
+
+            }
+
+
+
+            ArrayList<RecipeItem> recipeFragList = SearchRecipeList.getInstance().getList();
+
             RecipeRecyclerView = root.findViewById(R.id.recyclerView);
             RecipeRecyclerView.setHasFixedSize(true);
             RecipeLayoutManager = new LinearLayoutManager(getContext());
@@ -218,6 +215,42 @@ public class SearchFragment extends Fragment {
         }
         url += "&number=10";
         return url;
+    }
+    class APIThread extends Thread {
+
+        APIThread() {
+            System.out.println("Thread Start");
+        }
+
+        public void run() {
+            Request get = new Request.Builder()
+                    .url(createURL())
+                    .build();
+
+            client.newCall(get).enqueue(new Callback() {
+                @Override public void onFailure(Call call, IOException e) {
+                    e.printStackTrace();
+                }
+
+                @Override public void onResponse(Call call, Response response) throws IOException {
+                    try (ResponseBody responseBody = response.body()) {
+                        if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+//                        Headers responseHeaders = response.headers();
+//                        for (int i = 0, size = responseHeaders.size(); i < size; i++) {
+//                            System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+//                        }
+
+                        jsonStr = responseBody.string();
+                        response.close();
+
+                    }
+
+                }
+            });
+
+
+        }
     }
 
 }

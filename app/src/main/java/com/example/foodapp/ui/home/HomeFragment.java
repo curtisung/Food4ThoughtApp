@@ -54,7 +54,7 @@ public class HomeFragment extends Fragment {
         EditText e = (EditText) root.findViewById(R.id.pantryItemText);
 
         final ImageButton profBtn = root.findViewById(R.id.profileBtn);
-        final Button editBtn = root.findViewById(R.id.editProfileBtn);
+//        final Button editBtn = root.findViewById(R.id.editProfileBtn);
 
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +63,7 @@ public class HomeFragment extends Fragment {
                 ///only adds if there are characters in string
                 if (!s.equals("")){
                     pantry.add(new PantryItem(s));
+                    IngredientList.getInstance().setUpdatedStatusTrue();
                     e.setText("");
                     rva.notifyDataSetChanged();
                 }
@@ -79,7 +80,7 @@ public class HomeFragment extends Fragment {
                     rv.setVisibility(view.GONE);
                     e.setVisibility(view.GONE);
                     addBtn.setVisibility(view.GONE);
-                    editBtn.setVisibility(view.VISIBLE);
+//                    editBtn.setVisibility(view.VISIBLE);
 
                 } else {
                     tv.setText("Your Pantry List");
@@ -87,7 +88,7 @@ public class HomeFragment extends Fragment {
                     rv.setVisibility(view.VISIBLE);
                     e.setVisibility(view.VISIBLE);
                     addBtn.setVisibility(view.VISIBLE);
-                    editBtn.setVisibility(view.GONE);
+//                    editBtn.setVisibility(view.GONE);
                 }
                 pantryMode = !pantryMode;
             }
