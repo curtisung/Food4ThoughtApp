@@ -201,7 +201,7 @@ public class SearchFragment extends Fragment {
 
     public String createURL(){
         ArrayList<PantryItem> pantry = IngredientList.getInstance().getList();
-        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=a4f99db33e0c409c9acfde9739fca4eb&ingredients=";
+        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=455aa5b8b88b4e82838a9f3ff34dbbc6&ingredients=";
         for (int i = 0; i < pantry.size(); i++) {
             if (i == 0){
                 url += pantry.get(i).getText1().trim();

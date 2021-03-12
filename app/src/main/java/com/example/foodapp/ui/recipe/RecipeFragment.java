@@ -78,12 +78,12 @@ public class RecipeFragment extends Fragment{
         // for getting recipe info (or more specifically, the price)
         String info_url =  String.format("https://api.spoonacular.com/recipes/%s/" +
                 "information?" +
-                "apiKey=a4f99db33e0c409c9acfde9739fca4eb&" +
+                "apiKey=455aa5b8b88b4e82838a9f3ff34dbbc6&" +
                 "includeNutrition=false", id);
         // for getting recipe instructions
         String instr_url = String.format("https://api.spoonacular.com/recipes/%s/" +
                 "analyzedInstructions?" +
-                "apiKey=a4f99db33e0c409c9acfde9739fca4eb&", id);
+                "apiKey=455aa5b8b88b4e82838a9f3ff34dbbc6&", id);
 
         // info and instruction requests
         Request info_get = new Request.Builder()
