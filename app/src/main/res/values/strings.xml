@@ -24,12 +24,9 @@
         <item>celery</item>
     </string-array>
 
-    <string name="ceasar_salad_ingredients">¼ cup olive oil\n
-        ¼ cup soft silken tofu\n
-        ½ teaspoon finely grated lemon zest\n
-        2 tablespoons fresh lemon juice\n
-        2 teaspoons Dijon mustard\n
-        2 teaspoons drained capers\n
-        2 teaspoons nutritional yeast…</string>
+    <string name="recipe_ingredients">Recipe Ingredients Placeholder</string>
+    <string name="recipe_title">Recipe Title Placeholder</string>
+    <string name="recipe_description">Recipe Description Placeholder</string>
+    <string name="recipe_preparation_text">Recipe Preparatoin Placeholder</string>
 
 </resources>

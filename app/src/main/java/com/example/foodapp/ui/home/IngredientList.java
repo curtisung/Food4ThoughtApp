@@ -9,8 +9,8 @@ public  class IngredientList {
 
     private IngredientList(){
         itemList = new ArrayList<>();
-
     }
+
     public static IngredientList getInstance(){
         if(instance == null){
             instance = new IngredientList();
