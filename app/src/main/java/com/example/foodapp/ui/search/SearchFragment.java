@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +31,7 @@ import com.example.foodapp.R;
 import com.example.foodapp.ui.home.ExampleAdapter;
 import com.example.foodapp.ui.home.ExampleItem;
 import com.example.foodapp.ui.home.IngredientList;
+import com.example.foodapp.ui.recipe.CurrentRecipeID;
 import com.example.foodapp.ui.recipe.RecipeFragment;
 import com.example.foodapp.ui.saved.SavedList;
 import com.example.foodapp.ui.saved.savedRecipeItem;
@@ -44,6 +46,7 @@ import java.util.Iterator;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -65,6 +68,7 @@ public class SearchFragment extends Fragment {
     private RecyclerView.LayoutManager RecipeLayoutManager;
     private View root;
     private SearchViewModel searchViewModel;
+    private String jsonStr = "";
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
@@ -78,36 +82,36 @@ public class SearchFragment extends Fragment {
         super.onResume();
         //test api
         OkHttpClient client = new OkHttpClient();
-//        Request get = new Request.Builder()
-//        .url(createURL())
-//        .build();
-//
-//        client.newCall(get).enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) {
-//                try {
-//                    ResponseBody responseBody = response.body();
-//                    if (!response.isSuccessful()) {
-//                        throw new IOException("Unexpected code " + response);
-//                    }
-//
-//                    Log.i("data", responseBody.string());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
+        Request get = new Request.Builder()
+        .url(createURL())
+        .build();
 
-        String obj = loadJSONFromAsset();
+        client.newCall(get).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                    Headers responseHeaders = response.headers();
+                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
+                        System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+                    }
+
+                    jsonStr = responseBody.string();
+                }
+            }
+        });
+
+//        String obj = loadJSONFromAsset();
         ArrayList<savedRecipeItem> savedRecipes = SavedList.getInstance().getList();
+        while (jsonStr.equals("")){
 
+        }
         try {
-            JSONArray recipeList = new JSONArray(obj);
+            JSONArray recipeList = new JSONArray(jsonStr);
             ArrayList<RecipeItem> recipeFragList = new ArrayList<>();
             for(int i=0; i<recipeList.length(); i++) {
                 JSONObject recipe = (JSONObject) recipeList.getJSONObject(i);
@@ -135,11 +139,8 @@ public class SearchFragment extends Fragment {
             RecipeAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener(){
                 @Override
                 public void onItemClick(int position) {
-                    RecipeFragment fragment= new RecipeFragment();
-                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.search_fragment, fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
+                    CurrentRecipeID.getInstance().setCurrentID(recipeFragList.get(position).getId());
+                    Navigation.findNavController(getView()).navigate(R.id.navigation_recipe);
                 }
 
                 @Override
@@ -203,7 +204,7 @@ public class SearchFragment extends Fragment {
 
     public String createURL(){
         ArrayList<ExampleItem> pantry = IngredientList.getInstance().getList();
-        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=&ingredients=";
+        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=a4f99db33e0c409c9acfde9739fca4eb&ingredients=";
         for (int i = 0; i < pantry.size(); i++) {
             if (i == 0){
                 url += pantry.get(i).getText1().trim();
