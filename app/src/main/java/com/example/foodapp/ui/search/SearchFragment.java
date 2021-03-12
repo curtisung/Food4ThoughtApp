@@ -1,16 +1,11 @@
 package com.example.foodapp.ui.search;
 
-import android.content.Context;
-import android.content.ReceiverCallNotAllowedException;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,38 +22,43 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodapp.MainActivity;
+
 import com.example.foodapp.R;
-import com.example.foodapp.ui.home.ExampleAdapter;
-import com.example.foodapp.ui.home.ExampleItem;
 import com.example.foodapp.ui.home.IngredientList;
+
 import com.example.foodapp.ui.recipe.CurrentRecipeID;
+
+import com.example.foodapp.ui.home.PantryItem;
+
 import com.example.foodapp.ui.recipe.RecipeFragment;
 import com.example.foodapp.ui.saved.SavedList;
 import com.example.foodapp.ui.saved.savedRecipeItem;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
+
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Headers;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
-
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 //import org.json.simple.parser.JSONParser;
 //import org.json.simple.parser.ParseException;
 
@@ -203,7 +203,7 @@ public class SearchFragment extends Fragment {
     }
 
     public String createURL(){
-        ArrayList<ExampleItem> pantry = IngredientList.getInstance().getList();
+        ArrayList<PantryItem> pantry = IngredientList.getInstance().getList();
         String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=a4f99db33e0c409c9acfde9739fca4eb&ingredients=";
         for (int i = 0; i < pantry.size(); i++) {
             if (i == 0){

@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodapp.R;
-import com.example.foodapp.ui.home.ExampleItem;
 import com.example.foodapp.ui.home.IngredientList;
 import com.example.foodapp.ui.recipe.CurrentRecipeID;
 import com.example.foodapp.ui.recipe.RecipeFragment;
