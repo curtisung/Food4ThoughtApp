@@ -5,28 +5,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.example.foodapp.R;
+import com.example.foodapp.ui.recipe.RecipeFragment;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.foodapp.R;
-import com.example.foodapp.ui.home.ExampleItem;
-import com.example.foodapp.ui.home.IngredientList;
-import com.example.foodapp.ui.recipe.RecipeFragment;
-import com.example.foodapp.ui.search.RecipeItem;
-import com.example.foodapp.ui.search.RecyclerAdapter;
-
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class SavedFragment extends Fragment {
     private RecyclerView RecipeRecyclerView;

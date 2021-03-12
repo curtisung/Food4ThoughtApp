@@ -1,6 +1,5 @@
 package com.example.foodapp.ui.saved;
 
-import com.example.foodapp.ui.home.ExampleItem;
 
 import java.util.ArrayList;
 

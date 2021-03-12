@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Food App</string>
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
@@ -14,10 +14,42 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_title">Food 4 Thought</string>
     <string name="pantryEditText">Pantry Ingredient</string>
+    <string name="nameEditText">John Doe</string>
+    <string name="emailEditText">john.doe@email.com</string>
+    <string name="locationEditText">San Jose, CA</string>
+    <string name="heightEditText">206</string>
+    <string name="weightEditText">180 LBS</string>
     <string name="pantryAddText">Add</string>
     <string name="item1">ITEM_ONE</string>
     <string name="item2">ITEM_TWO</string>
-    <string name="profileEditBtn">Edit Profile</string>
+    <string name="profileEditBtn">Edit User Profile</string>
+    <string name="dietBtn">Diet Restrictions</string>
+    <string name="pantryTitleA">The Pantry</string>
+    <string name="pantryTitleB">Add your current groceries here.</string>
+    <string name="nameTitle">Name</string>
+    <string name="emailTitle">Email</string>
+    <string name="locationTitle">Location</string>
+    <string name="heightTitle">Height (cm)</string>
+    <string name="weightTitle">Weight (LBS)</string>
+    <string name="updateProf">Update Profile</string>
+    <string name="allergen">ALLERGEN_1</string>
+    <string name="defaultName">John Doe</string>
+    <string name="defaultEmail">john.doe@email.com</string>
+    <string name="profileHeight">HGHT:</string>
+    <string name="defaultHeight">206</string>
+    <string name="centimeters">cm</string>
+    <string name="profileWeight">WGHT:</string>
+    <string name="defaultWeight">180</string>
+    <string name="lbs">LBS</string>
+    <string name="defaultLocation">San Jose, CA</string>
+    <string name="allergy0">Milk</string>
+    <string name="allergy1">Eggs</string>
+    <string name="allergy2">Tree Nuts</string>
+    <string name="allergy3">Peanuts</string>
+    <string name="allergy4">Shellfish</string>
+    <string name="allergy5">Wheat</string>
+    <string name="allergy6">Soy</string>
+    <string name="allergy7">Fish</string>
 
     <string-array name="query_suggestions">
         <item>bread</item>
