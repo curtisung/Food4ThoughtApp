@@ -5,19 +5,29 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.example.foodapp.R;
-import com.example.foodapp.ui.recipe.RecipeFragment;
-
-import java.util.ArrayList;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.foodapp.R;
+import com.example.foodapp.ui.home.IngredientList;
+import com.example.foodapp.ui.recipe.CurrentRecipeID;
+import com.example.foodapp.ui.recipe.RecipeFragment;
+import com.example.foodapp.ui.search.RecipeItem;
+import com.example.foodapp.ui.search.RecyclerAdapter;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class SavedFragment extends Fragment {
     private RecyclerView RecipeRecyclerView;
@@ -56,11 +66,8 @@ public class SavedFragment extends Fragment {
         RecipeAdapter.setOnItemClickListener(new SavedRecyclerAdapter.OnItemClickListener(){
             @Override
             public void onItemClick(int position) {
-                RecipeFragment fragment= new RecipeFragment();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.saved_fragment, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                CurrentRecipeID.getInstance().setCurrentID(savedRecipes.get(position).getId());
+                Navigation.findNavController(getView()).navigate(R.id.navigation_recipe);
             }
 
             @Override

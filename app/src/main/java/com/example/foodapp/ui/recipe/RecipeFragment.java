@@ -3,6 +3,7 @@ package com.example.foodapp.ui.recipe;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -49,12 +51,11 @@ import java.util.ArrayList;
 
 
 public class RecipeFragment extends Fragment{
-
-
-
     private RecipeViewModel recipeViewModel;
     private View rootView;
-
+    private String info_str="";
+    private String instr_str="";
+    private OkHttpClient client;
     public static Drawable LoadImageFromWebOperations(String url) {
         try {
             InputStream in = (InputStream) new URL(url).getContent();
@@ -69,11 +70,10 @@ public class RecipeFragment extends Fragment{
     public void onResume() {
         super.onResume();
 
-        OkHttpClient client = new OkHttpClient();
+
 
         // cheese pesto pizza
-        String id = "544091";
-//        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=<>=";
+        String id = CurrentRecipeID.getInstance().getCurrentID().toString();
 
         // for getting recipe info (or more specifically, the price)
         String info_url =  String.format("https://api.spoonacular.com/recipes/%s/" +
@@ -85,22 +85,73 @@ public class RecipeFragment extends Fragment{
                 "analyzedInstructions?" +
                 "apiKey=a4f99db33e0c409c9acfde9739fca4eb&", id);
 
-//        Log.i("information url: ", info_url);
-//        Log.i("instructions url: ", instr_url);
+        // info and instruction requests
+        Request info_get = new Request.Builder()
+                .url(info_url)
+                .build();
 
-//        Request get = new Request.Builder()
-//                .url(url)
-//                .build();
+        Request instr_get = new Request.Builder()
+                .url(instr_url)
+                .build();
 
-        String info_str = "{\"vegetarian\":false,\"vegan\":false,\"glutenFree\":false,\"dairyFree\":false,\"veryHealthy\":false,\"cheap\":false,\"veryPopular\":false,\"sustainable\":false,\"weightWatcherSmartPoints\":14,\"gaps\":\"no\",\"lowFodmap\":false,\"preparationMinutes\":2,\"cookingMinutes\":15,\"aggregateLikes\":0,\"spoonacularScore\":28.0,\"healthScore\":3.0,\"creditsText\":\"Weelicious\",\"sourceName\":\"Weelicious\",\"pricePerServing\":243.61,\"extendedIngredients\":[{\"id\":93723,\"aisle\":\"Bakery/Bread;Ethnic Foods\",\"image\":\"naan.png\",\"consistency\":\"solid\",\"name\":\"naan bread\",\"nameClean\":\"naan\",\"original\":\"4 whole wheat naan bread\",\"originalString\":\"4 whole wheat naan bread\",\"originalName\":\"whole wheat naan bread\",\"amount\":4.0,\"unit\":\"\",\"meta\":[\"whole wheat\"],\"metaInformation\":[\"whole wheat\"],\"measures\":{\"us\":{\"amount\":4.0,\"unitShort\":\"\",\"unitLong\":\"\"},\"metric\":{\"amount\":4.0,\"unitShort\":\"\",\"unitLong\":\"\"}}},{\"id\":1033,\"aisle\":\"Cheese\",\"image\":\"parmesan.jpg\",\"consistency\":\"solid\",\"name\":\"parmesan cheese\",\"nameClean\":\"parmesan\",\"original\":\"2 tablespoons parmesan cheese, grated\",\"originalString\":\"2 tablespoons parmesan cheese, grated\",\"originalName\":\"parmesan cheese, grated\",\"amount\":2.0,\"unit\":\"tablespoons\",\"meta\":[\"grated\"],\"metaInformation\":[\"grated\"],\"measures\":{\"us\":{\"amount\":2.0,\"unitShort\":\"Tbsps\",\"unitLong\":\"Tbsps\"},\"metric\":{\"amount\":2.0,\"unitShort\":\"Tbsps\",\"unitLong\":\"Tbsps\"}}},{\"id\":1001026,\"aisle\":\"Cheese\",\"image\":\"shredded-cheese-white.jpg\",\"consistency\":\"solid\",\"name\":\"shredded mozzarella cheese\",\"nameClean\":\"shredded mozzarella\",\"original\":\"1 cup mozzarella cheese, shredded\",\"originalString\":\"1 cup mozzarella cheese, shredded\",\"originalName\":\"mozzarella cheese, shredded\",\"amount\":1.0,\"unit\":\"cup\",\"meta\":[\"shredded\"],\"metaInformation\":[\"shredded\"],\"measures\":{\"us\":{\"amount\":1.0,\"unitShort\":\"cup\",\"unitLong\":\"cup\"},\"metric\":{\"amount\":236.588,\"unitShort\":\"ml\",\"unitLong\":\"milliliters\"}}},{\"id\":11955,\"aisle\":\"Canned and Jarred;Produce\",\"image\":\"sundried-tomatoes.jpg\",\"consistency\":\"solid\",\"name\":\"sun dried tomato\",\"nameClean\":\"sun dried tomatoes\",\"original\":\"1/4 cup pesto, basil or sun dried tomato\",\"originalString\":\"1/4 cup pesto, basil or sun dried tomato\",\"originalName\":\"pesto, basil or sun dried tomato\",\"amount\":0.25,\"unit\":\"cup\",\"meta\":[\"dried\"],\"metaInformation\":[\"dried\"],\"measures\":{\"us\":{\"amount\":0.25,\"unitShort\":\"cups\",\"unitLong\":\"cups\"},\"metric\":{\"amount\":59.147,\"unitShort\":\"ml\",\"unitLong\":\"milliliters\"}}}],\"id\":544091,\"title\":\"Two Cheese Pesto Pizza\",\"readyInMinutes\":17,\"servings\":4,\"sourceUrl\":\"http://weelicious.com/2012/02/23/two-cheese-pesto-pizza/\",\"image\":\"https://spoonacular.com/recipeImages/544091-556x370.jpg\",\"imageType\":\"jpg\",\"summary\":\"The recipe Two Cheese Pesto Pizza could satisfy your Mediterranean craving in around <b>17 minutes</b>. For <b>$2.44 per serving</b>, this recipe <b>covers 7%</b> of your daily requirements of vitamins and minerals. One serving contains <b>486 calories</b>, <b>18g of protein</b>, and <b>17g of fat</b>. Only a few people really liked this main course. This recipe from Weelicious has 1 fans. If you have naan bread, parmesan cheese, mozzarella cheese, and a few other ingredients on hand, you can make it. All things considered, we decided this recipe <b>deserves a spoonacular score of 23%</b>. This score is rather bad. Try <a href=\\\"https://spoonacular.com/recipes/pesto-and-cheese-pizza-159650\\\">Pesto and Cheese Pizza</a>, <a href=\\\"https://spoonacular.com/recipes/three-cheese-pesto-pizza-396059\\\">Three-Cheese Pesto Pizza</a>, and <a href=\\\"https://spoonacular.com/recipes/easy-three-cheese-pesto-pizza-413839\\\">Easy Three-Cheese Pesto Pizza</a> for similar recipes.\",\"cuisines\":[\"Mediterranean\",\"Italian\",\"European\"],\"dishTypes\":[\"lunch\",\"main course\",\"main dish\",\"dinner\"],\"diets\":[],\"occasions\":[],\"winePairing\":{},\"instructions\":\"1. Preheat oven to 450 F. 2. Place the first 2 ingredients in a bowl and combine.3. Spread 1 tbsp of pesto on each piece of naan bread and top with  cup of the cheese blend.4. Place pizzas on a baking sheet and bake for 10-12 minutes.5. Serve.\",\"analyzedInstructions\":[{\"name\":\"\",\"steps\":[{\"number\":1,\"step\":\"Preheat oven to 450 F.\",\"ingredients\":[],\"equipment\":[{\"id\":404784,\"name\":\"oven\",\"localizedName\":\"oven\",\"image\":\"oven.jpg\",\"temperature\":{\"number\":450.0,\"unit\":\"Fahrenheit\"}}]},{\"number\":2,\"step\":\"Place the first 2 ingredients in a bowl and combine.\",\"ingredients\":[],\"equipment\":[{\"id\":404783,\"name\":\"bowl\",\"localizedName\":\"bowl\",\"image\":\"bowl.jpg\"}]},{\"number\":3,\"step\":\"Spread 1 tbsp of pesto on each piece of naan bread and top with  cup of the cheese blend.\",\"ingredients\":[{\"id\":93723,\"name\":\"naan\",\"localizedName\":\"naan\",\"image\":\"naan.png\"},{\"id\":1041009,\"name\":\"cheese\",\"localizedName\":\"cheese\",\"image\":\"cheddar-cheese.png\"},{\"id\":0,\"name\":\"spread\",\"localizedName\":\"spread\",\"image\":\"\"},{\"id\":93698,\"name\":\"pesto\",\"localizedName\":\"pesto\",\"image\":\"basil-pesto.png\"}],\"equipment\":[]},{\"number\":4,\"step\":\"Place pizzas on a baking sheet and bake for 10-12 minutes.\",\"ingredients\":[],\"equipment\":[{\"id\":404727,\"name\":\"baking sheet\",\"localizedName\":\"baking sheet\",\"image\":\"baking-sheet.jpg\"},{\"id\":404784,\"name\":\"oven\",\"localizedName\":\"oven\",\"image\":\"oven.jpg\"}],\"length\":{\"number\":12,\"unit\":\"minutes\"}},{\"number\":5,\"step\":\"Serve.\",\"ingredients\":[],\"equipment\":[]}]}],\"originalId\":" +
-                "null}";
-        String instr_str = "{\"name\":\"\",\"steps\":[{\"number\":1,\"step\":\"Preheat oven to 450 F.\",\"ingredients\":[],\"equipment\":[{\"id\":404784,\"name\":\"oven\",\"localizedName\":\"oven\",\"image\":\"oven.jpg\",\"temperature\":{\"number\":450.0,\"unit\":\"Fahrenheit\"}}]},{\"number\":2,\"step\":\"Place the first 2 ingredients in a bowl and combine.\",\"ingredients\":[],\"equipment\":[{\"id\":404783,\"name\":\"bowl\",\"localizedName\":\"bowl\",\"image\":\"bowl.jpg\"}]},{\"number\":3,\"step\":\"Spread 1 tbsp of pesto on each piece of naan bread and top with  cup of the cheese blend.\",\"ingredients\":[{\"id\":93723,\"name\":\"naan\",\"localizedName\":\"naan\",\"image\":\"naan.png\"},{\"id\":1041009,\"name\":\"cheese\",\"localizedName\":\"cheese\",\"image\":\"cheddar-cheese.png\"},{\"id\":0,\"name\":\"spread\",\"localizedName\":\"spread\",\"image\":\"\"},{\"id\":93698,\"name\":\"pesto\",\"localizedName\":\"pesto\",\"image\":\"basil-pesto.png\"}],\"equipment\":[]},{\"number\":4,\"step\":\"Place pizzas on a baking sheet and bake for 10-12 minutes.\",\"ingredients\":[],\"equipment\":[{\"id\":404727,\"name\":\"baking sheet\",\"localizedName\":\"baking sheet\",\"image\":\"baking-sheet.jpg\"},{\"id\":404784,\"name\":\"oven\",\"localizedName\":\"oven\",\"image\":\"oven.jpg\"}],\"length\":{\"number\":12,\"unit\":\"minutes\"}},{\"number\":5,\"step\":\"Serve.\",\"ingredients\":[],\"equipment\":[]}]}";
+        // assign JSON strings to info_str and instr_str
+        client.newCall(info_get).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                    Headers responseHeaders = response.headers();
+//                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
+//                        System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+//                    }
+
+                    info_str = responseBody.string();
+                    response.close();
+                }
+            }
+        });
+
+        client.newCall(instr_get).enqueue(new Callback() {
+            @Override public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override public void onResponse(Call call, Response response) throws IOException {
+                try (ResponseBody responseBody = response.body()) {
+                    if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                    Headers responseHeaders = response.headers();
+//                    for (int i = 0, size = responseHeaders.size(); i < size; i++) {
+//                        System.out.println(responseHeaders.name(i) + ": " + responseHeaders.value(i));
+//                    }
+
+                    instr_str = responseBody.string();
+                    response.close();
+                }
+            }
+        });
+
+        // wait for info_str response
+        while (info_str.equals("")){
+            System.out.println("Loading infostr");
+        }
+        // wait for instr_str response
+        while (instr_str.equals("")){
+            System.out.println("Loading instr_str");
+        }
+
+//        String info_str = "{\"vegetarian\":false,\"vegan\":false,\"glutenFree\":false,\"dairyFree\":false,\"veryHealthy\":false,\"cheap\":false,\"veryPopular\":false,\"sustainable\":false,\"weightWatcherSmartPoints\":14,\"gaps\":\"no\",\"lowFodmap\":false,\"preparationMinutes\":2,\"cookingMinutes\":15,\"aggregateLikes\":0,\"spoonacularScore\":28.0,\"healthScore\":3.0,\"creditsText\":\"Weelicious\",\"sourceName\":\"Weelicious\",\"pricePerServing\":243.61,\"extendedIngredients\":[{\"id\":93723,\"aisle\":\"Bakery/Bread;Ethnic Foods\",\"image\":\"naan.png\",\"consistency\":\"solid\",\"name\":\"naan bread\",\"nameClean\":\"naan\",\"original\":\"4 whole wheat naan bread\",\"originalString\":\"4 whole wheat naan bread\",\"originalName\":\"whole wheat naan bread\",\"amount\":4.0,\"unit\":\"\",\"meta\":[\"whole wheat\"],\"metaInformation\":[\"whole wheat\"],\"measures\":{\"us\":{\"amount\":4.0,\"unitShort\":\"\",\"unitLong\":\"\"},\"metric\":{\"amount\":4.0,\"unitShort\":\"\",\"unitLong\":\"\"}}},{\"id\":1033,\"aisle\":\"Cheese\",\"image\":\"parmesan.jpg\",\"consistency\":\"solid\",\"name\":\"parmesan cheese\",\"nameClean\":\"parmesan\",\"original\":\"2 tablespoons parmesan cheese, grated\",\"originalString\":\"2 tablespoons parmesan cheese, grated\",\"originalName\":\"parmesan cheese, grated\",\"amount\":2.0,\"unit\":\"tablespoons\",\"meta\":[\"grated\"],\"metaInformation\":[\"grated\"],\"measures\":{\"us\":{\"amount\":2.0,\"unitShort\":\"Tbsps\",\"unitLong\":\"Tbsps\"},\"metric\":{\"amount\":2.0,\"unitShort\":\"Tbsps\",\"unitLong\":\"Tbsps\"}}},{\"id\":1001026,\"aisle\":\"Cheese\",\"image\":\"shredded-cheese-white.jpg\",\"consistency\":\"solid\",\"name\":\"shredded mozzarella cheese\",\"nameClean\":\"shredded mozzarella\",\"original\":\"1 cup mozzarella cheese, shredded\",\"originalString\":\"1 cup mozzarella cheese, shredded\",\"originalName\":\"mozzarella cheese, shredded\",\"amount\":1.0,\"unit\":\"cup\",\"meta\":[\"shredded\"],\"metaInformation\":[\"shredded\"],\"measures\":{\"us\":{\"amount\":1.0,\"unitShort\":\"cup\",\"unitLong\":\"cup\"},\"metric\":{\"amount\":236.588,\"unitShort\":\"ml\",\"unitLong\":\"milliliters\"}}},{\"id\":11955,\"aisle\":\"Canned and Jarred;Produce\",\"image\":\"sundried-tomatoes.jpg\",\"consistency\":\"solid\",\"name\":\"sun dried tomato\",\"nameClean\":\"sun dried tomatoes\",\"original\":\"1/4 cup pesto, basil or sun dried tomato\",\"originalString\":\"1/4 cup pesto, basil or sun dried tomato\",\"originalName\":\"pesto, basil or sun dried tomato\",\"amount\":0.25,\"unit\":\"cup\",\"meta\":[\"dried\"],\"metaInformation\":[\"dried\"],\"measures\":{\"us\":{\"amount\":0.25,\"unitShort\":\"cups\",\"unitLong\":\"cups\"},\"metric\":{\"amount\":59.147,\"unitShort\":\"ml\",\"unitLong\":\"milliliters\"}}}],\"id\":544091,\"title\":\"Two Cheese Pesto Pizza\",\"readyInMinutes\":17,\"servings\":4,\"sourceUrl\":\"http://weelicious.com/2012/02/23/two-cheese-pesto-pizza/\",\"image\":\"https://spoonacular.com/recipeImages/544091-556x370.jpg\",\"imageType\":\"jpg\",\"summary\":\"The recipe Two Cheese Pesto Pizza could satisfy your Mediterranean craving in around <b>17 minutes</b>. For <b>$2.44 per serving</b>, this recipe <b>covers 7%</b> of your daily requirements of vitamins and minerals. One serving contains <b>486 calories</b>, <b>18g of protein</b>, and <b>17g of fat</b>. Only a few people really liked this main course. This recipe from Weelicious has 1 fans. If you have naan bread, parmesan cheese, mozzarella cheese, and a few other ingredients on hand, you can make it. All things considered, we decided this recipe <b>deserves a spoonacular score of 23%</b>. This score is rather bad. Try <a href=\\\"https://spoonacular.com/recipes/pesto-and-cheese-pizza-159650\\\">Pesto and Cheese Pizza</a>, <a href=\\\"https://spoonacular.com/recipes/three-cheese-pesto-pizza-396059\\\">Three-Cheese Pesto Pizza</a>, and <a href=\\\"https://spoonacular.com/recipes/easy-three-cheese-pesto-pizza-413839\\\">Easy Three-Cheese Pesto Pizza</a> for similar recipes.\",\"cuisines\":[\"Mediterranean\",\"Italian\",\"European\"],\"dishTypes\":[\"lunch\",\"main course\",\"main dish\",\"dinner\"],\"diets\":[],\"occasions\":[],\"winePairing\":{},\"instructions\":\"1. Preheat oven to 450 F. 2. Place the first 2 ingredients in a bowl and combine.3. Spread 1 tbsp of pesto on each piece of naan bread and top with  cup of the cheese blend.4. Place pizzas on a baking sheet and bake for 10-12 minutes.5. Serve.\",\"analyzedInstructions\":[{\"name\":\"\",\"steps\":[{\"number\":1,\"step\":\"Preheat oven to 450 F.\",\"ingredients\":[],\"equipment\":[{\"id\":404784,\"name\":\"oven\",\"localizedName\":\"oven\",\"image\":\"oven.jpg\",\"temperature\":{\"number\":450.0,\"unit\":\"Fahrenheit\"}}]},{\"number\":2,\"step\":\"Place the first 2 ingredients in a bowl and combine.\",\"ingredients\":[],\"equipment\":[{\"id\":404783,\"name\":\"bowl\",\"localizedName\":\"bowl\",\"image\":\"bowl.jpg\"}]},{\"number\":3,\"step\":\"Spread 1 tbsp of pesto on each piece of naan bread and top with  cup of the cheese blend.\",\"ingredients\":[{\"id\":93723,\"name\":\"naan\",\"localizedName\":\"naan\",\"image\":\"naan.png\"},{\"id\":1041009,\"name\":\"cheese\",\"localizedName\":\"cheese\",\"image\":\"cheddar-cheese.png\"},{\"id\":0,\"name\":\"spread\",\"localizedName\":\"spread\",\"image\":\"\"},{\"id\":93698,\"name\":\"pesto\",\"localizedName\":\"pesto\",\"image\":\"basil-pesto.png\"}],\"equipment\":[]},{\"number\":4,\"step\":\"Place pizzas on a baking sheet and bake for 10-12 minutes.\",\"ingredients\":[],\"equipment\":[{\"id\":404727,\"name\":\"baking sheet\",\"localizedName\":\"baking sheet\",\"image\":\"baking-sheet.jpg\"},{\"id\":404784,\"name\":\"oven\",\"localizedName\":\"oven\",\"image\":\"oven.jpg\"}],\"length\":{\"number\":12,\"unit\":\"minutes\"}},{\"number\":5,\"step\":\"Serve.\",\"ingredients\":[],\"equipment\":[]}]}],\"originalId\":" +
+//                "null}";
+//        String instr_str = "{\"name\":\"\",\"steps\":[{\"number\":1,\"step\":\"Preheat oven to 450 F.\",\"ingredients\":[],\"equipment\":[{\"id\":404784,\"name\":\"oven\",\"localizedName\":\"oven\",\"image\":\"oven.jpg\",\"temperature\":{\"number\":450.0,\"unit\":\"Fahrenheit\"}}]},{\"number\":2,\"step\":\"Place the first 2 ingredients in a bowl and combine.\",\"ingredients\":[],\"equipment\":[{\"id\":404783,\"name\":\"bowl\",\"localizedName\":\"bowl\",\"image\":\"bowl.jpg\"}]},{\"number\":3,\"step\":\"Spread 1 tbsp of pesto on each piece of naan bread and top with  cup of the cheese blend.\",\"ingredients\":[{\"id\":93723,\"name\":\"naan\",\"localizedName\":\"naan\",\"image\":\"naan.png\"},{\"id\":1041009,\"name\":\"cheese\",\"localizedName\":\"cheese\",\"image\":\"cheddar-cheese.png\"},{\"id\":0,\"name\":\"spread\",\"localizedName\":\"spread\",\"image\":\"\"},{\"id\":93698,\"name\":\"pesto\",\"localizedName\":\"pesto\",\"image\":\"basil-pesto.png\"}],\"equipment\":[]},{\"number\":4,\"step\":\"Place pizzas on a baking sheet and bake for 10-12 minutes.\",\"ingredients\":[],\"equipment\":[{\"id\":404727,\"name\":\"baking sheet\",\"localizedName\":\"baking sheet\",\"image\":\"baking-sheet.jpg\"},{\"id\":404784,\"name\":\"oven\",\"localizedName\":\"oven\",\"image\":\"oven.jpg\"}],\"length\":{\"number\":12,\"unit\":\"minutes\"}},{\"number\":5,\"step\":\"Serve.\",\"ingredients\":[],\"equipment\":[]}]}";
 
         try {
             JSONObject info_j = new JSONObject(info_str);
-            JSONObject instr_j = new JSONObject(instr_str);
-//            Log.i("Info JSON obj: ", info_j.toString());
-//            Log.i("Instr JSON obj: ", instr_j.toString());
+            JSONArray temp = new JSONArray(instr_str);
+            JSONObject instr_j = temp.getJSONObject(0);
 
             String r_title = info_j.getString("title");
             String r_desc = info_j.getString("summary");
@@ -194,15 +245,7 @@ public class RecipeFragment extends Fragment{
                 GetUrlFromIntent(v);
             }
         });
-
-
-//                final TextView textView = root.findViewById(R.id.recipeTitle);
-//        recipeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
+        client = new OkHttpClient();
         return root;
     }
 
@@ -213,6 +256,7 @@ public class RecipeFragment extends Fragment{
         i.setData(Uri.parse(url));
         startActivity(i);
     }
+
 
 
 
