@@ -43,6 +43,10 @@ import org.json.JSONObject;
 
 //import Picasso.*;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+
 public class RecipeFragment extends Fragment{
 
 
@@ -171,10 +175,12 @@ public class RecipeFragment extends Fragment{
 
     }
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         recipeViewModel =
                 new ViewModelProvider(this).get(RecipeViewModel.class);
+
         View root = inflater.inflate(R.layout.fragment_recipe, container, false);
         this.rootView = root;
 //                final TextView textView = root.findViewById(R.id.recipeTitle);
@@ -187,10 +193,12 @@ public class RecipeFragment extends Fragment{
         return root;
     }
 
+
     public void GetUrlFromIntent(View view) {
         String url = "http://www.google.com";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
     }
+
 }
