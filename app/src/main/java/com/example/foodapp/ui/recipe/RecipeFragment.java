@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.foodapp.R;
-import com.example.foodapp.ui.home.ExampleItem;
+import com.example.foodapp.ui.home.PantryItem;
 import com.example.foodapp.ui.home.IngredientList;
 import com.squareup.picasso.Picasso;
 
