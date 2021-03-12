@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -142,7 +143,8 @@ public class RecipeFragment extends Fragment{
             tv_instr.setText(r_instr);
 
             ImageView iv_pic = rootView.findViewById(R.id.recipeImage);
-            Picasso.with(getContext()).load(r_pic).into(iv_pic);
+
+            Picasso.get().load(r_pic).centerCrop().fit().into(iv_pic);
 
             // set picture
 
@@ -183,6 +185,17 @@ public class RecipeFragment extends Fragment{
 
         View root = inflater.inflate(R.layout.fragment_recipe, container, false);
         this.rootView = root;
+
+        Button btn = (Button) root.findViewById(R.id.mapsButton);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GetUrlFromIntent(v);
+            }
+        });
+
+
 //                final TextView textView = root.findViewById(R.id.recipeTitle);
 //        recipeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
 //            @Override
@@ -195,10 +208,12 @@ public class RecipeFragment extends Fragment{
 
 
     public void GetUrlFromIntent(View view) {
-        String url = "http://www.google.com";
+        String url = "https://www.google.com/maps/search/grocery+store/";
         Intent i = new Intent(Intent.ACTION_VIEW);
         i.setData(Uri.parse(url));
         startActivity(i);
     }
+
+
 
 }
