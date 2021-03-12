@@ -1,5 +1,6 @@
 package com.example.foodapp.ui.search;
 
+import android.content.Context;
 import android.content.ReceiverCallNotAllowedException;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -13,16 +14,25 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.ui.NavigationUI;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodapp.MainActivity;
 import com.example.foodapp.R;
+import com.example.foodapp.ui.home.ExampleAdapter;
 import com.example.foodapp.ui.home.ExampleItem;
 import com.example.foodapp.ui.home.IngredientList;
+import com.example.foodapp.ui.recipe.RecipeFragment;
+import com.example.foodapp.ui.saved.SavedList;
+import com.example.foodapp.ui.saved.savedRecipeItem;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -51,11 +61,10 @@ import org.json.simple.parser.ParseException;
 
 public class SearchFragment extends Fragment {
     private RecyclerView RecipeRecyclerView;
-    private RecyclerView.Adapter RecipeAdapter;
+    private RecyclerAdapter RecipeAdapter;
     private RecyclerView.LayoutManager RecipeLayoutManager;
     private View root;
     private SearchViewModel searchViewModel;
-    private ArrayList<ExampleItem> pantry = IngredientList.getInstance().getList();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
@@ -95,6 +104,7 @@ public class SearchFragment extends Fragment {
 //        });
 
         String obj = loadJSONFromAsset();
+        ArrayList<savedRecipeItem> savedRecipes = SavedList.getInstance().getList();
 
         try {
             JSONArray recipeList = new JSONArray(obj);
@@ -106,7 +116,14 @@ public class SearchFragment extends Fragment {
                 String title = (String) recipe.get("title");
                 String usedIngredientCount = recipe.get("usedIngredientCount").toString();
                 String missedIngredientCount = recipe.get("missedIngredientCount").toString();
-                recipeFragList.add(new RecipeItem(image, id, title, usedIngredientCount, missedIngredientCount));
+                Drawable star = ContextCompat.getDrawable(getActivity(), R.drawable.white_star);
+                for (int x = 0; x < savedRecipes.size(); x++){
+                    if (savedRecipes.get(x).getId() == id){
+                        star = ContextCompat.getDrawable(getActivity(), R.drawable.fav_star);
+                        break;
+                    }
+                }
+                recipeFragList.add(new RecipeItem(image,star, id, title, usedIngredientCount, missedIngredientCount));
             }
             RecipeRecyclerView = root.findViewById(R.id.recyclerView);
             RecipeRecyclerView.setHasFixedSize(true);
@@ -114,6 +131,49 @@ public class SearchFragment extends Fragment {
             RecipeAdapter = new RecyclerAdapter(recipeFragList);
             RecipeRecyclerView.setLayoutManager(RecipeLayoutManager);
             RecipeRecyclerView.setAdapter(RecipeAdapter);
+
+            RecipeAdapter.setOnItemClickListener(new RecyclerAdapter.OnItemClickListener(){
+                @Override
+                public void onItemClick(int position) {
+                    RecipeFragment fragment= new RecipeFragment();
+                    FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.search_fragment, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+
+                @Override
+                public void onFavClick(int position) {
+                    Drawable star = ContextCompat.getDrawable(getActivity(), R.drawable.fav_star);
+                    RecipeItem current = recipeFragList.get(position);
+                    Boolean isSaved = Boolean.FALSE;
+                    for (int i = 0; i < savedRecipes.size(); i++){
+                        if (savedRecipes.get(i).getId() == current.getId()){
+                            isSaved = Boolean.TRUE;
+                            break;
+                        }
+                    }
+                    if (isSaved == Boolean.FALSE){
+                        current.setStarDrawable(star);
+                        current.setFavorited();
+                        savedRecipeItem saved = new savedRecipeItem(current.getmImageResource(),star,current.getId(), current.getRecipeName());
+                        savedRecipes.add(saved);
+                    }
+                    else{
+                        current.setStarDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.white_star));
+                        current.setFavorited();
+                        for (int i = 0; i < savedRecipes.size(); i++){
+                            if (savedRecipes.get(i).getId() == current.getId()){
+                                savedRecipes.remove(i);
+                                break;
+                            }
+                        }
+
+                    }
+                    RecipeAdapter.notifyDataSetChanged();
+
+                }
+            });
 
 
 
@@ -142,7 +202,8 @@ public class SearchFragment extends Fragment {
     }
 
     public String createURL(){
-        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=a4f99db33e0c409c9acfde9739fca4eb&ingredients=";
+        ArrayList<ExampleItem> pantry = IngredientList.getInstance().getList();
+        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=&ingredients=";
         for (int i = 0; i < pantry.size(); i++) {
             if (i == 0){
                 url += pantry.get(i).getText1().trim();
@@ -157,5 +218,6 @@ public class SearchFragment extends Fragment {
         url += "&number=10";
         return url;
     }
+
 }
 
