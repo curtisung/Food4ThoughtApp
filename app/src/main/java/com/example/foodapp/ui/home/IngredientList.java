@@ -1,11 +1,10 @@
 package com.example.foodapp.ui.home;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public  class IngredientList {
 
-    private ArrayList<ExampleItem> itemList;
+    private ArrayList<PantryItem> itemList;
     private static IngredientList instance;
 
     private IngredientList(){
@@ -19,7 +18,7 @@ public  class IngredientList {
         return instance;
     }
 
-    public ArrayList<ExampleItem> getList(){
+    public ArrayList<PantryItem> getList(){
         return this.itemList;
     }
 

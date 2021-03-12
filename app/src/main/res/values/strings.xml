@@ -6,17 +6,18 @@
     <string name="title_recipe">Recipe</string>
     <string name="search_placeholder">Display search results here.</string>
     <string name="saved_placeholder">Display saved recipes here.</string>
-    <string name="home_placeholder">Ingredient selection happens here.</string>
+    <string name="home_placeholder">Your Pantry List</string>
     <string name="recipe_placeholder">Current recipe happens here.</string>
     <string name="search_bar_placeholder">Current searchbar happens here</string>
     <string name="search_title_placeholder">Current search title happens here.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="app_title">Food 4 Thought</string>
-    <string name="pantryEditText">Enter Ingredient Name</string>
-    <string name="pantryAddText">Add Ingredient to Pantry</string>
+    <string name="pantryEditText">Pantry Ingredient</string>
+    <string name="pantryAddText">Add</string>
     <string name="item1">ITEM_ONE</string>
     <string name="item2">ITEM_TWO</string>
+    <string name="profileEditBtn">Edit Profile</string>
 
     <string-array name="query_suggestions">
         <item>bread</item>

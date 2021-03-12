@@ -1,47 +1,28 @@
 package com.example.foodapp.ui.search;
 
-import android.content.ReceiverCallNotAllowedException;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.foodapp.R;
-import com.example.foodapp.ui.home.ExampleItem;
+import com.example.foodapp.ui.home.PantryItem;
 import com.example.foodapp.ui.home.IngredientList;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -55,7 +36,7 @@ public class SearchFragment extends Fragment {
     private RecyclerView.LayoutManager RecipeLayoutManager;
     private View root;
     private SearchViewModel searchViewModel;
-    private ArrayList<ExampleItem> pantry = IngredientList.getInstance().getList();
+    private ArrayList<PantryItem> pantry = IngredientList.getInstance().getList();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);

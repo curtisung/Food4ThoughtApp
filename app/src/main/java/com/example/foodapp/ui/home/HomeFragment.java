@@ -6,7 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.example.foodapp.R;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,17 +21,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.foodapp.R;
-
-import java.util.ArrayList;
-
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private RecyclerView rv;
     private RecyclerView.Adapter rva;
     private RecyclerView.LayoutManager rvlm;
-    private ArrayList<ExampleItem> pantry = IngredientList.getInstance().getList();
+    private ArrayList<PantryItem> pantry = IngredientList.getInstance().getList();
+    private boolean pantryMode = true;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,25 +45,51 @@ public class HomeFragment extends Fragment {
 
         rv = root.findViewById(R.id.recyclerView);
         rv.setHasFixedSize(true);
-        rva = new ExampleAdapter(pantry);
+        rva = new PantryItemAdapter(pantry);
         rvlm = new LinearLayoutManager(getContext());
         rv.setLayoutManager(rvlm);
         rv.setAdapter(rva);
 
-        final Button btn = root.findViewById(R.id.pantryAddBtn);
+        final Button addBtn = root.findViewById(R.id.pantryAddBtn);
         EditText e = (EditText) root.findViewById(R.id.pantryItemText);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        final ImageButton profBtn = root.findViewById(R.id.profileBtn);
+        final Button editBtn = root.findViewById(R.id.editProfileBtn);
+
+        addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String s = e.getText().toString();
                 ///only adds if there are characters in string
                 if (!s.equals("")){
-                    pantry.add(new ExampleItem(s));
+                    pantry.add(new PantryItem(s));
                     e.setText("");
                     rva.notifyDataSetChanged();
                 }
+            }
+        });
 
+        profBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                TextView tv = root.findViewById(R.id.pantryTitle);
+                if (pantryMode) {
+                    tv.setText("Your Profile Page");
+                    profBtn.setImageResource(R.drawable.ic_baseline_clear_24);
+                    rv.setVisibility(view.GONE);
+                    e.setVisibility(view.GONE);
+                    addBtn.setVisibility(view.GONE);
+                    editBtn.setVisibility(view.VISIBLE);
+
+                } else {
+                    tv.setText("Your Pantry List");
+                    profBtn.setImageResource(R.drawable.ic_baseline_switch_account_24);
+                    rv.setVisibility(view.VISIBLE);
+                    e.setVisibility(view.VISIBLE);
+                    addBtn.setVisibility(view.VISIBLE);
+                    editBtn.setVisibility(view.GONE);
+                }
+                pantryMode = !pantryMode;
             }
         });
 
