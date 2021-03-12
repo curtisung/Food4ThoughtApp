@@ -22,7 +22,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="107dp"
-        tools:layout_editor_absoluteY="64dp">
+        tools:layout_editor_absoluteY="64dp"
+        android:gravity="center_horizontal">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -45,10 +46,10 @@
             <TextView
                 android:id="@+id/recipeTitle"
                 android:layout_width="369dp"
-                android:layout_height="47dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="18dp"
-                android:text="Vegan Ceasar Salad"
+                android:text="@string/recipe_title"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toTopOf="@+id/recipeImage"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -70,34 +71,28 @@
                 app:layout_constraintStart_toEndOf="@+id/recipeImage"
                 app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
 
-            <TextView
-                android:id="@+id/recipeDescriptionText"
-                android:layout_width="202dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text='"Nutritional yeast is worth having around whether you are vegan or not. Try it on popcorn and you will never look back."'
-                android:textColor="@android:color/secondary_text_dark_nodisable"
-                app:layout_constraintEnd_toEndOf="parent"
+            <ScrollView
+                android:layout_width="195dp"
+                android:layout_height="102dp"
+                app:layout_constraintBottom_toTopOf="@+id/recipeIngredientsHeader"
                 app:layout_constraintStart_toEndOf="@+id/recipeImage"
-                app:layout_constraintTop_toBottomOf="@+id/recipeDescriptionHeader" />
+                app:layout_constraintTop_toBottomOf="@+id/recipeDescriptionHeader">
 
-            <Button
-                android:id="@+id/mapsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="60dp"
-                android:text="Find nearby grocery stores"
-                app:backgroundTint="#628837"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.886"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recipePreparationText" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/recipeDescriptionText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/recipe_description"
+                        android:textColor="@android:color/secondary_text_dark_nodisable" />
+                </LinearLayout>
+            </ScrollView>
+
+
 
             <TextView
                 android:id="@+id/recipeIngredientsHeader"
@@ -121,7 +116,7 @@
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="9dp"
-                android:text="@string/ceasar_salad_ingredients"
+                android:text="@string/recipe_ingredients"
                 app:layout_constraintBottom_toTopOf="@+id/recipePreparationHeader"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -147,11 +142,30 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="4dp"
-                android:text="Step 1: Purée oil, tofu, lemon zest and juice, mustard, capers, and nutritional yeast in a blender until smooth. Season with salt and pepper.  \n Step 2 Just before serving, toss dressing with lettuce, croutons, and almonds."
+                android:text="@string/recipe_preparation_text"
                 app:layout_constraintBottom_toTopOf="@+id/mapsButton"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recipePreparationHeader"
                 app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/mapsButton"
+                android:onClick="GetUrlFromIntent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="60dp"
+                android:text="Find nearby grocery stores"
+                app:backgroundTint="#628837"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.886"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/recipePreparationText" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

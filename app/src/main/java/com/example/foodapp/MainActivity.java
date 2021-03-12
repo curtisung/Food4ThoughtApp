@@ -16,12 +16,12 @@ import com.example.foodapp.ui.home.ExampleItem;
 import com.example.foodapp.ui.home.HomeViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+//import okhttp3.Call;
+//import okhttp3.Callback;
+//import okhttp3.OkHttpClient;
+//import okhttp3.Request;
+//import okhttp3.Response;
+//import okhttp3.ResponseBody;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         ///test api
-        OkHttpClient client = new OkHttpClient();
+//        OkHttpClient client = new OkHttpClient();
 //        String url = "https://api.spoonacular.com/recipes/findByIngredients?apiKey=<>=";
 //        for (int i = 0; i < ingredients.size(); i++) {
 //            if (i == 0){
