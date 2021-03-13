@@ -189,6 +189,7 @@ public class HomeFragment extends Fragment {
                 ///only adds if there are characters in string
                 if (!s.equals("")){
                     pantry.add(new PantryItem(s));
+                    IngredientList.getInstance().setUpdatedStatusTrue();
                     e.setText("");
                     panViewAdapter.notifyDataSetChanged();
                 }
